@@ -249,7 +249,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           poetry-version: ${{ env.POETRY_VERSION }}
           working-directory: ${{ inputs.working-directory }}
-          cache-key: releaseartifact@v4
+          cache-key: release
 
       - uses: actions/download-artifact@v4
         with:
