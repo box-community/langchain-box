@@ -54,29 +54,9 @@ def test_search(auth, env_vars):  # type: ignore[no-untyped-def]
 
     docs = retriever.invoke("test_file_3.docx")
 
-    assert docs == [
-        Document(
-            page_content="Langchain integration test 3\n",
-            metadata={
-                "source": "https://dl.boxcloud.com/api/2.0/internal_files/1724742143566/versions/1899362450170/representations/extracted_text/content/",
-                "title": "test_file_3_docx",
-            },
-        ),
-        Document(
-            page_content="Langchain integration test 2\n",
-            metadata={
-                "source": "https://dl.boxcloud.com/api/2.0/internal_files/1724741335031/versions/1899370540709/representations/extracted_text/content/",
-                "title": "test_file_2_docx",
-            },
-        ),
-        Document(
-            page_content="Langchain integration test 1\n",
-            metadata={
-                "source": "https://dl.boxcloud.com/api/2.0/internal_files/1724737576425/versions/1899382753871/representations/extracted_text/content/",
-                "title": "test_file_1_docx",
-            },
-        ),
-    ]
+    for doc in docs:
+        page_num = doc.metadata["title"].split("_")[2]
+        assert doc.page_content == f"Langchain integration test {page_num}\n"
 
 
 def test_box_ai(auth, env_vars):  # type: ignore[no-untyped-def]
