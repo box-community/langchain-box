@@ -179,9 +179,13 @@ class BoxAuth(BaseModel):
 
     
     * **Token** — either a developer token or any token generated through the Box SDK
+
     * **JWT** with a service account
+    
     * **JWT** with a specified user
+    
     * **CCG** with a service account
+    
     * **CCG** with a specified user
 
     
@@ -251,8 +255,10 @@ class BoxAuth(BaseModel):
     ```
 
     
+    
     **JWT with a service account**
 
+    
     ```python
 
         from langchain_box.document_loaders import BoxLoader
@@ -270,8 +276,10 @@ class BoxAuth(BaseModel):
     ```
 
 
+    
     **JWT with a specified user**
 
+    
     ```python
 
         from langchain_box.document_loaders import BoxLoader
@@ -290,8 +298,10 @@ class BoxAuth(BaseModel):
     ```
 
 
+    
     **CCG with a service account**
 
+    
     ```python
 
         from langchain_box.document_loaders import BoxLoader
@@ -311,8 +321,10 @@ class BoxAuth(BaseModel):
     ```
 
 
+    
     **CCG with a specified user**
 
+    
     ```python
 
         from langchain_box.document_loaders import BoxLoader
