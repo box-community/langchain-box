@@ -241,17 +241,25 @@ class BoxAuth(BaseModel):
     ```python
 
         from langchain_box.document_loaders import BoxLoader
+
         from langchain_box.utilities import BoxAuth, BoxAuthType
 
         auth = BoxAuth(
+
             auth_type=BoxAuthType.TOKEN,
+
             box_developer_token=box_developer_token
+
         )
 
         loader = BoxLoader(
+
             box_auth=auth,
+
             ...
+
         )
+        
     ```
 
     
