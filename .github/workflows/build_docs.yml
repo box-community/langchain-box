@@ -1,7 +1,5 @@
 name: Build Docs and Open PR
-on:
-  push:
-    branches: [ master ]
+on: workflow_dispatch
 
 jobs:
   build:
