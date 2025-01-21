@@ -44,44 +44,6 @@ Blob(id='1514535131595' metadata={'source': 'https://app.box.com/0/260935730128/
 loader = BoxBlobLoader( box_file_ids=["1234"], extra_fields=["shared_link"] )   
 This will return in the metadata in the form ``"metadata" : { ..., "shared_link" : value } 
 
-**[BoxRetriever](BoxRetriever.md)**: Box retriever.   
-`BoxRetriever` provides the ability to retrieve content from your Box instance in a couple of ways.   
-1. You can use the Box full-text search to retrieve the complete document(s) that match your search query, as `List[Document]` 2. You can use the Box AI Platform API to retrieve the results from a Box AI prompt. This can be a `Document` containing the result of the prompt, or you can retrieve the citations used to generate the prompt to include in your vectorstore.   
-Setup: Install ``langchain-box``:   
-.. code-block:: bash   
-pip install -U langchain-box   
-Instantiate:   
-To use search:   
-.. code-block:: python   
-from langchain_box.retrievers import BoxRetriever   
-retriever = BoxRetriever()   
-To use Box AI:   
-.. code-block:: python   
-from langchain_box.retrievers import BoxRetriever   
-file_ids=["12345","67890"]   
-retriever = BoxRetriever(file_ids)   
-  
-Usage: .. code-block:: python   
-retriever = BoxRetriever() retriever.invoke("victor") print(docs[0].page_content[:100])   
-.. code-block:: none   
-[ Document( metadata={ 'source': 'url', 'title': 'FIVE_FEET_AND_RISING_by_Peter_Sollett_pdf' }, page_content='\n3/20/23, 5:31 PM F...' ) ]   
-Use within a chain: .. code-block:: python   
-from langchain_core.output_parsers import StrOutputParser from langchain_core.prompts import ChatPromptTemplate from langchain_core.runnables import RunnablePassthrough from langchain_openai import ChatOpenAI   
-retriever = BoxRetriever(box_developer_token=box_developer_token, character_limit=10000)   
-context="You are an actor reading scripts to learn about your role in an upcoming movie." question="describe the character Victor"   
-prompt = ChatPromptTemplate.from_template( """Answer the question based only on the context provided.   
-Context: {context}   
-Question: {question}""" )   
-def format_docs(docs): return "\n\n".join(doc.page_content for doc in docs)   
-chain = ( {"context": retriever | format_docs, "question": RunnablePassthrough()} | prompt | llm | StrOutputParser() )   
-chain.invoke("Victor")  # search query to find files in Box )   
-.. code-block:: none   
-'Victor is a skinny 12-year-old with sloppy hair who is seen sleeping on his fire escape in the sun. He is hesitant to go to the pool with his friend Carlos because he is afraid of getting in trouble for not letting his mother cut his hair. Ultimately, he decides to go to the pool with Carlos.'   
-**Extra Fields** - If you want to specify additional LangChain metadata fields based on fields available in the Box File Information API, you can add them as ``extra_fields`` when instantiating the object. As an example, if you want to add the ``shared_link`` object, you would pass a ``List[str]`` object like:   
-. code_block:: python   
-loader = BoxBlobLoader( box_file_ids=["1234"], extra_fields=["shared_link"] )   
-This will return in the metadata in the form ``"metadata" : { ..., "shared_link" : value } 
-
 **[BoxLoader](BoxLoader.md)**: BoxLoader.   
 This class will help you load files from your Box instance. You must have a Box account. If you need one, you can sign up for a free developer account. You will also need a Box application created in the developer portal, where you can select your authorization type.   
 If you wish to use either of the Box AI options, you must be on an Enterprise Plus plan or above. The free developer account does not have access to Box AI.   
@@ -121,6 +83,44 @@ Document(metadata={'source': 'https://dl.boxcloud.com/api/2.0/ internal_files/15
 loader = BoxBlobLoader( box_file_ids=["1234"], extra_fields=["shared_link"] )   
 This will return in the metadata in the form ``"metadata" : { ..., "shared_link" : value } 
 
+**[BoxRetriever](BoxRetriever.md)**: Box retriever.   
+`BoxRetriever` provides the ability to retrieve content from your Box instance in a couple of ways.   
+1. You can use the Box full-text search to retrieve the complete document(s) that match your search query, as `List[Document]` 2. You can use the Box AI Platform API to retrieve the results from a Box AI prompt. This can be a `Document` containing the result of the prompt, or you can retrieve the citations used to generate the prompt to include in your vectorstore.   
+Setup: Install ``langchain-box``:   
+.. code-block:: bash   
+pip install -U langchain-box   
+Instantiate:   
+To use search:   
+.. code-block:: python   
+from langchain_box.retrievers import BoxRetriever   
+retriever = BoxRetriever()   
+To use Box AI:   
+.. code-block:: python   
+from langchain_box.retrievers import BoxRetriever   
+file_ids=["12345","67890"]   
+retriever = BoxRetriever(file_ids)   
+  
+Usage: .. code-block:: python   
+retriever = BoxRetriever() retriever.invoke("victor") print(docs[0].page_content[:100])   
+.. code-block:: none   
+[ Document( metadata={ 'source': 'url', 'title': 'FIVE_FEET_AND_RISING_by_Peter_Sollett_pdf' }, page_content='\n3/20/23, 5:31 PM F...' ) ]   
+Use within a chain: .. code-block:: python   
+from langchain_core.output_parsers import StrOutputParser from langchain_core.prompts import ChatPromptTemplate from langchain_core.runnables import RunnablePassthrough from langchain_openai import ChatOpenAI   
+retriever = BoxRetriever(box_developer_token=box_developer_token, character_limit=10000)   
+context="You are an actor reading scripts to learn about your role in an upcoming movie." question="describe the character Victor"   
+prompt = ChatPromptTemplate.from_template( """Answer the question based only on the context provided.   
+Context: {context}   
+Question: {question}""" )   
+def format_docs(docs): return "\n\n".join(doc.page_content for doc in docs)   
+chain = ( {"context": retriever | format_docs, "question": RunnablePassthrough()} | prompt | llm | StrOutputParser() )   
+chain.invoke("Victor")  # search query to find files in Box )   
+.. code-block:: none   
+'Victor is a skinny 12-year-old with sloppy hair who is seen sleeping on his fire escape in the sun. He is hesitant to go to the pool with his friend Carlos because he is afraid of getting in trouble for not letting his mother cut his hair. Ultimately, he decides to go to the pool with Carlos.'   
+**Extra Fields** - If you want to specify additional LangChain metadata fields based on fields available in the Box File Information API, you can add them as ``extra_fields`` when instantiating the object. As an example, if you want to add the ``shared_link`` object, you would pass a ``List[str]`` object like:   
+. code_block:: python   
+loader = BoxBlobLoader( box_file_ids=["1234"], extra_fields=["shared_link"] )   
+This will return in the metadata in the form ``"metadata" : { ..., "shared_link" : value } 
+
 **[DocumentFiles](DocumentFiles.md)**: DocumentFiles(Enum).   
 An enum containing all of the supported extensions for files Box considers Documents. These files should have text representations. 
 
@@ -134,30 +134,39 @@ TOKEN - Use a developer token generated from the Box Deevloper Token. Only recom
 CCG - Client Credentials Grant. provide ``box_client_id`, ``box_client_secret`, and ``box_enterprise_id`` or optionally `box_user_id`.   
 JWT - Use JWT for authentication. Config should be stored on the file system accessible to your app. provide ``box_jwt_path``. Optionally, provide ``box_user_id`` to act as a specific user 
 
-**[BoxAuth](BoxAuth.md)**: **BoxAuth.**   
+**[BoxAuth](BoxAuth.md)**: **BoxAuth**   
 The `box-langchain` package offers some flexibility to authentication. The most basic authentication method is by using a developer token. This can be found in the [Box developer console](https://account.box.com/developers/console) on the configuration screen. This token is purposely short-lived (1 hour) and is intended for development. With this token, you can add it to your environment as `BOX_DEVELOPER_TOKEN`, you can pass it directly to the loader, or you can use the `BoxAuth` authentication helper class.   
   
 `BoxAuth` supports the following authentication methods:   
   
 * **Token** — either a developer token or any token generated through the Box SDK * **JWT** with a service account * **JWT** with a specified user * **CCG** with a service account * **CCG** with a specified user   
   
-> [!NOTE] >    If using JWT authentication, you will need to download the configuration from >    the Box developer console after generating your public/private key pair. Place >    this file in your application directory structure somewhere. You will use the >    path to this file when using the ``BoxAuth`` helper class. If you wish to use >    OAuth2 with the authorization_code flow, please use ``BoxAuthType.TOKEN`` with >    the token you have acquired.   
+> **NOTE**: >    If using JWT authentication, you will need to download the configuration from >    the Box developer console after generating your public/private key pair. Place >    this file in your application directory structure somewhere. You will use the >    path to this file when using the `BoxAuth` helper class. If you wish to use >    OAuth2 with the authorization_code flow, please use `BoxAuthType.TOKEN` with >    the token you have acquired.   
   
 For more information, learn about how to set up a [Box application](https://developer.box.com/guides/getting-started/first-application/), and check out the [Box authentication guide](https://developer.box.com/guides/authentication/select/) for more about our different authentication options.   
   
-Simple implementation:   
+**Simple implementation**:   
   
 To instantiate, you must provide a `langchain_box.utilities.BoxAuthType`.   
- BoxAuthType is an enum to tell BoxLoader how you wish to autheticate your Box connection.   
- Options are:   
- TOKEN - Use a developer token generated from the Box Deevloper Token. Only recommended for development. Provide ``box_developer_token``.  CCG - Client Credentials Grant. provide ``box_client_id``, ``box_client_secret``, and ``box_enterprise_id`` or optionally ``box_user_id``.  JWT - Use JWT for authentication. Config should be stored on the file system accessible to your app. provide ``box_jwt_path``. Optionally, provide ``box_user_id`` to act as a specific user   
- **Examples**:   
- **Token**   
- ```python   
+  
+BoxAuthType is an enum to tell BoxLoader how you wish to autheticate your Box connection.   
+  
+Options are:   
+  
+TOKEN - Use a developer token generated from the Box Deevloper Token. Only recommended for development. Provide ``box_developer_token``.   
+CCG - Client Credentials Grant. provide `box_client_id`, `box_client_secret`, and `box_enterprise_id` or optionally `box_user_id`.   
+JWT - Use JWT for authentication. Config should be stored on the file system accessible to your app. Provide `box_jwt_path`. Optionally, provide `box_user_id` to act as a specific user.   
+  
+**Examples**:   
+  
+**Token**   
+  
+```python   
 from langchain_box.document_loaders import BoxLoader from langchain_box.utilities import BoxAuth, BoxAuthType   
 auth = BoxAuth( auth_type=BoxAuthType.TOKEN, box_developer_token=box_developer_token )   
 loader = BoxLoader( box_auth=auth, ... ) ```   
- **JWT with a service account**   
+  
+**JWT with a service account**   
 ```python   
 from langchain_box.document_loaders import BoxLoader from langchain_box.utilities import BoxAuth, BoxAuthType   
 auth = BoxAuth( auth_type=BoxAuthType.JWT, box_jwt_path=box_jwt_path )   
@@ -192,6 +201,32 @@ Enum to limit the what we search.
 
 
 ## Functions
+
+### get_min_version
+
+
+
+#### Parameters
+name | description | default
+--- | --- | ---
+version |  | 
+
+
+
+
+
+### get_min_version_from_toml
+
+
+
+#### Parameters
+name | description | default
+--- | --- | ---
+toml_path |  | 
+
+
+
+
 
 ### test_placeholder
 
@@ -331,6 +366,92 @@ env_vars |  |
 
 
 
+### test_one_file
+
+
+
+#### Parameters
+name | description | default
+--- | --- | ---
+auth |  | 
+env_vars |  | 
+
+
+
+
+
+### test_multiple_files
+
+
+
+#### Parameters
+name | description | default
+--- | --- | ---
+auth |  | 
+env_vars |  | 
+
+
+
+
+
+### test_folder
+
+
+
+#### Parameters
+name | description | default
+--- | --- | ---
+auth |  | 
+env_vars |  | 
+
+
+
+
+
+### test_folder_recursive
+
+
+
+#### Parameters
+name | description | default
+--- | --- | ---
+auth |  | 
+env_vars |  | 
+
+
+
+
+
+### test_extra_fields
+
+
+
+#### Parameters
+name | description | default
+--- | --- | ---
+auth |  | 
+env_vars |  | 
+
+
+
+
+
+### auth
+
+
+
+
+
+
+
+### env_vars
+
+
+
+
+
+
+
 ### test_search
 
 
@@ -415,95 +536,123 @@ env_vars |  |
 
 
 
-### auth
-
-
-
-
-
-
-
-### env_vars
-
-
-
-
-
-
-
-### test_one_file
-
-
-
-#### Parameters
-name | description | default
---- | --- | ---
-auth |  | 
-env_vars |  | 
-
-
-
-
-
-### test_multiple_files
-
-
-
-#### Parameters
-name | description | default
---- | --- | ---
-auth |  | 
-env_vars |  | 
-
-
-
-
-
-### test_folder
-
-
-
-#### Parameters
-name | description | default
---- | --- | ---
-auth |  | 
-env_vars |  | 
-
-
-
-
-
-### test_folder_recursive
-
-
-
-#### Parameters
-name | description | default
---- | --- | ---
-auth |  | 
-env_vars |  | 
-
-
-
-
-
-### test_extra_fields
-
-
-
-#### Parameters
-name | description | default
---- | --- | ---
-auth |  | 
-env_vars |  | 
-
-
-
-
-
 ### test_all_imports
 
 
+
+
+
+
+
+### test_direct_token_initialization
+
+
+
+
+
+
+
+### test_failed_direct_token_initialization
+
+
+
+
+
+
+
+### test_auth_initialization
+
+
+
+
+
+
+
+### test_failed_file_initialization
+
+
+
+
+
+
+
+### test_folder_initialization
+
+
+
+
+
+
+
+### test_file_load
+
+
+
+#### Parameters
+name | description | default
+--- | --- | ---
+mocker |  | 
+
+
+
+
+
+### test_direct_token_initialization
+
+
+
+
+
+
+
+### test_failed_direct_token_initialization
+
+
+
+
+
+
+
+### test_auth_initialization
+
+
+
+
+
+
+
+### test_failed_file_initialization
+
+
+
+
+
+
+
+### test_folder_initialization
+
+
+
+
+
+
+
+### test_failed_initialization_files_and_folders
+
+
+
+
+
+
+
+### test_file_load
+
+
+
+#### Parameters
+name | description | default
+--- | --- | ---
+mocker |  | 
 
 
 
@@ -586,67 +735,6 @@ mocker |  |
 
 
 ### test_ai_citations_only
-
-
-
-#### Parameters
-name | description | default
---- | --- | ---
-mocker |  | 
-
-
-
-
-
-### test_direct_token_initialization
-
-
-
-
-
-
-
-### test_failed_direct_token_initialization
-
-
-
-
-
-
-
-### test_auth_initialization
-
-
-
-
-
-
-
-### test_failed_file_initialization
-
-
-
-
-
-
-
-### test_folder_initialization
-
-
-
-
-
-
-
-### test_failed_initialization_files_and_folders
-
-
-
-
-
-
-
-### test_file_load
 
 
 
@@ -830,59 +918,6 @@ mocker |  |
 
 
 
-### test_direct_token_initialization
-
-
-
-
-
-
-
-### test_failed_direct_token_initialization
-
-
-
-
-
-
-
-### test_auth_initialization
-
-
-
-
-
-
-
-### test_failed_file_initialization
-
-
-
-
-
-
-
-### test_folder_initialization
-
-
-
-
-
-
-
-### test_file_load
-
-
-
-#### Parameters
-name | description | default
---- | --- | ---
-mocker |  | 
-
-
-
-
-
 ### _make_iterator
 
 
@@ -892,32 +927,6 @@ name | description | default
 --- | --- | ---
 length_func |  | 
 show_progress |  | False
-
-
-
-
-
-### get_min_version
-
-
-
-#### Parameters
-name | description | default
---- | --- | ---
-version |  | 
-
-
-
-
-
-### get_min_version_from_toml
-
-
-
-#### Parameters
-name | description | default
---- | --- | ---
-toml_path |  | 
 
 
 
