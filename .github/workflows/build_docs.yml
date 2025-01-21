@@ -7,7 +7,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Generate Python Docs
-      uses: s-martin/markdown-docs@v1
+      uses: shurrey/markdown-docs@master
     - name: Open docs update PR
       uses: peter-evans/create-pull-request@v5
       with:
