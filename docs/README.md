@@ -168,9 +168,16 @@ JWT - Use JWT for authentication. Config should be stored on the file system acc
 **Token**   
   
 ```python   
-from langchain_box.document_loaders import BoxLoader from langchain_box.utilities import BoxAuth, BoxAuthType   
-auth = BoxAuth( auth_type=BoxAuthType.TOKEN, box_developer_token=box_developer_token )   
-loader = BoxLoader( box_auth=auth, ... ) ```   
+from langchain_box.document_loaders import BoxLoader   
+from langchain_box.utilities import BoxAuth, BoxAuthType   
+auth = BoxAuth(   
+auth_type=BoxAuthType.TOKEN,   
+box_developer_token=box_developer_token   
+)   
+loader = BoxLoader(   
+box_auth=auth,   
+...   
+)  ```   
   
   
 **JWT with a service account**   
