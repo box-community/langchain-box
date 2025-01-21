@@ -164,7 +164,7 @@ class BoxAuthType(Enum):
 
 
 class BoxAuth(BaseModel):
-    """**BoxAuth.**
+    """**BoxAuth**
 
     The `box-langchain` package offers some flexibility to authentication. The
     most basic authentication method is by using a developer token. This can be
@@ -185,12 +185,12 @@ class BoxAuth(BaseModel):
     * **CCG** with a specified user
 
     
-    > [!NOTE]  
+    > **NOTE**:  
     >    If using JWT authentication, you will need to download the configuration from
     >    the Box developer console after generating your public/private key pair. Place
     >    this file in your application directory structure somewhere. You will use the
-    >    path to this file when using the ``BoxAuth`` helper class. If you wish to use
-    >    OAuth2 with the authorization_code flow, please use ``BoxAuthType.TOKEN`` with
+    >    path to this file when using the `BoxAuth` helper class. If you wish to use
+    >    OAuth2 with the authorization_code flow, please use `BoxAuthType.TOKEN` with
     >    the token you have acquired.
 
     
@@ -201,135 +201,133 @@ class BoxAuth(BaseModel):
     for more about our different authentication options.
 
 
-    Simple implementation:
+    **Simple implementation**:
 
     
-        To instantiate, you must provide a `langchain_box.utilities.BoxAuthType`.
+    To instantiate, you must provide a `langchain_box.utilities.BoxAuthType`.
 
-        
-        BoxAuthType is an enum to tell BoxLoader how you wish to autheticate your
-        Box connection.
+    
+    BoxAuthType is an enum to tell BoxLoader how you wish to autheticate your
+    Box connection.
 
-        
-        Options are:
+    
+    Options are:
 
-        
-        TOKEN - Use a developer token generated from the Box Deevloper Token.
-                Only recommended for development.
-                Provide ``box_developer_token``.
-        
-        CCG - Client Credentials Grant.
-            provide ``box_client_id``, ``box_client_secret``,
-            and ``box_enterprise_id`` or optionally ``box_user_id``.
-        
-        JWT - Use JWT for authentication. Config should be stored on the file
-            system accessible to your app.
-            provide ``box_jwt_path``. Optionally, provide ``box_user_id`` to
-            act as a specific user
+    
+    TOKEN - Use a developer token generated from the Box Deevloper Token.
+    Only recommended for development. Provide ``box_developer_token``.
+    
+    CCG - Client Credentials Grant.
+    provide `box_client_id`, `box_client_secret`, and `box_enterprise_id` 
+    or optionally `box_user_id`.
+    
+    JWT - Use JWT for authentication. Config should be stored on the file
+    system accessible to your app. Provide `box_jwt_path`. Optionally, 
+    provide `box_user_id` to act as a specific user.
 
-        
-        **Examples**:
+    
+    **Examples**:
 
-        
-        **Token**
+    
+    **Token**
 
-        
-        ```python
+    
+    ```python
 
-            from langchain_box.document_loaders import BoxLoader
-            from langchain_box.utilities import BoxAuth, BoxAuthType
+        from langchain_box.document_loaders import BoxLoader
+        from langchain_box.utilities import BoxAuth, BoxAuthType
 
-            auth = BoxAuth(
-                auth_type=BoxAuthType.TOKEN,
-                box_developer_token=box_developer_token
-            )
+        auth = BoxAuth(
+            auth_type=BoxAuthType.TOKEN,
+            box_developer_token=box_developer_token
+        )
 
-            loader = BoxLoader(
-                box_auth=auth,
-                ...
-            )
-        ```
+        loader = BoxLoader(
+            box_auth=auth,
+            ...
+        )
+    ```
 
-        
-        **JWT with a service account**
+    
+    **JWT with a service account**
 
-        ```python
+    ```python
 
-            from langchain_box.document_loaders import BoxLoader
-            from langchain_box.utilities import BoxAuth, BoxAuthType
+        from langchain_box.document_loaders import BoxLoader
+        from langchain_box.utilities import BoxAuth, BoxAuthType
 
-            auth = BoxAuth(
-                auth_type=BoxAuthType.JWT,
-                box_jwt_path=box_jwt_path
-            )
+        auth = BoxAuth(
+            auth_type=BoxAuthType.JWT,
+            box_jwt_path=box_jwt_path
+        )
 
-            loader = BoxLoader(
-                box_auth=auth,
-                ...
-            )
-        ```
+        loader = BoxLoader(
+            box_auth=auth,
+            ...
+        )
+    ```
 
 
-        **JWT with a specified user**
+    **JWT with a specified user**
 
-        ```python
+    ```python
 
-            from langchain_box.document_loaders import BoxLoader
-            from langchain_box.utilities import BoxAuth, BoxAuthType
+        from langchain_box.document_loaders import BoxLoader
+        from langchain_box.utilities import BoxAuth, BoxAuthType
 
-            auth = BoxAuth(
-                auth_type=BoxAuthType.JWT,
-                box_jwt_path=box_jwt_path,
-                box_user_id=box_user_id
-            )
+        auth = BoxAuth(
+            auth_type=BoxAuthType.JWT,
+            box_jwt_path=box_jwt_path,
+            box_user_id=box_user_id
+        )
 
-            loader = BoxLoader(
-                box_auth=auth,
-                ...
-            )
-        ```
-
-
-        **CCG with a service account**
-
-        ```python
-
-            from langchain_box.document_loaders import BoxLoader
-            from langchain_box.utilities import BoxAuth, BoxAuthType
-
-            auth = BoxAuth(
-                auth_type=BoxAuthType.CCG,
-                box_client_id=box_client_id,
-                box_client_secret=box_client_secret,
-                box_enterprise_id=box_enterprise_id
-            )
-
-            loader = BoxLoader(
-                box_auth=auth,
-                ...
-            )
-        ```
+        loader = BoxLoader(
+            box_auth=auth,
+            ...
+        )
+    ```
 
 
-        **CCG with a specified user**
+    **CCG with a service account**
 
-        ```python
+    ```python
 
-            from langchain_box.document_loaders import BoxLoader
-            from langchain_box.utilities import BoxAuth, BoxAuthType
+        from langchain_box.document_loaders import BoxLoader
+        from langchain_box.utilities import BoxAuth, BoxAuthType
 
-            auth = BoxAuth(
-                auth_type=BoxAuthType.CCG,
-                box_client_id=box_client_id,
-                box_client_secret=box_client_secret,
-                box_user_id=box_user_id
-            )
+        auth = BoxAuth(
+            auth_type=BoxAuthType.CCG,
+            box_client_id=box_client_id,
+            box_client_secret=box_client_secret,
+            box_enterprise_id=box_enterprise_id
+        )
 
-            loader = BoxLoader(
-                box_auth=auth,
-                ...
-            )
-        ```
+        loader = BoxLoader(
+            box_auth=auth,
+            ...
+        )
+    ```
+
+
+    **CCG with a specified user**
+
+    ```python
+
+        from langchain_box.document_loaders import BoxLoader
+        from langchain_box.utilities import BoxAuth, BoxAuthType
+
+        auth = BoxAuth(
+            auth_type=BoxAuthType.CCG,
+            box_client_id=box_client_id,
+            box_client_secret=box_client_secret,
+            box_user_id=box_user_id
+        )
+
+        loader = BoxLoader(
+            box_auth=auth,
+            ...
+        )
+    ```
 
     """
 
