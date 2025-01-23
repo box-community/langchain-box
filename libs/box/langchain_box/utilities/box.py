@@ -142,11 +142,11 @@ class BoxAuthType(Enum):
     TOKEN - Use a developer token generated from the Box Deevloper Token.
             Only recommended for development.
             Provide ``box_developer_token``.
-    
+
     CCG - Client Credentials Grant.
           provide ``box_client_id`, ``box_client_secret`,
           and ``box_enterprise_id`` or optionally `box_user_id`.
-    
+
     JWT - Use JWT for authentication. Config should be stored on the file
           system accessible to your app.
           provide ``box_jwt_path``. Optionally, provide ``box_user_id`` to
@@ -177,28 +177,28 @@ class BoxAuth(BaseModel):
 
     `BoxAuth` supports the following authentication methods:
 
-    
+
     * **Token** — either a developer token or any token generated through the Box SDK
 
     * **JWT** with a service account
-    
+
     * **JWT** with a specified user
-    
+
     * **CCG** with a service account
-    
+
     * **CCG** with a specified user
 
-    
-    > **NOTE**: If using JWT authentication, you will need to download the 
-    configuration from the Box developer console after generating your 
-    public/private key pair. Place this file in your application directory 
-    structure somewhere. You will use the path to this file when using the 
-    `BoxAuth` helper class. If you wish to use OAuth2 with the 
-    authorization_code flow, please use `BoxAuthType.TOKEN` with the token 
+
+    > **NOTE**: If using JWT authentication, you will need to download the
+    configuration from the Box developer console after generating your
+    public/private key pair. Place this file in your application directory
+    structure somewhere. You will use the path to this file when using the
+    `BoxAuth` helper class. If you wish to use OAuth2 with the
+    authorization_code flow, please use `BoxAuthType.TOKEN` with the token
     you have acquired.
 
-    
-    For more information, learn about how to set up a 
+
+    For more information, learn about how to set up a
     [Box application](https://developer.box.com/guides/getting-started/first-application/),
     and check out the
     [Box authentication guide](https://developer.box.com/guides/authentication/select/)
@@ -207,37 +207,37 @@ class BoxAuth(BaseModel):
 
     **Simple implementation**:
 
-    
+
     To instantiate, you must provide a `langchain_box.utilities.BoxAuthType`.
 
-    
+
     BoxAuthType is an enum to tell BoxLoader how you wish to autheticate your
     Box connection.
 
-    
+
     Options are:
 
-    
+
     TOKEN - Use a developer token generated from the Box Developer Token.
     Only recommended for development. Provide `box_developer_token`.
 
-    
+
     CCG - Client Credentials Grant.
-    provide `box_client_id`, `box_client_secret`, and `box_enterprise_id` 
+    provide `box_client_id`, `box_client_secret`, and `box_enterprise_id`
     or optionally `box_user_id`.
-    
+
 
     JWT - Use JWT for authentication. Config should be stored on the file
-    system accessible to your app. Provide `box_jwt_path`. Optionally, 
+    system accessible to your app. Provide `box_jwt_path`. Optionally,
     provide `box_user_id` to act as a specific user.
 
-    
+
     **Examples**:
 
-    
+
     **Token**
 
-    
+
     ```python
 
         from langchain_box.document_loaders import BoxLoader
@@ -259,14 +259,14 @@ class BoxAuth(BaseModel):
             ...
 
         )
-        
+
     ```
 
-    
-    
+
+
     **JWT with a service account**
 
-    
+
     ```python
 
         from langchain_box.document_loaders import BoxLoader
@@ -284,10 +284,10 @@ class BoxAuth(BaseModel):
     ```
 
 
-    
+
     **JWT with a specified user**
 
-    
+
     ```python
 
         from langchain_box.document_loaders import BoxLoader
@@ -306,10 +306,10 @@ class BoxAuth(BaseModel):
     ```
 
 
-    
+
     **CCG with a service account**
 
-    
+
     ```python
 
         from langchain_box.document_loaders import BoxLoader
@@ -329,10 +329,10 @@ class BoxAuth(BaseModel):
     ```
 
 
-    
+
     **CCG with a specified user**
 
-    
+
     ```python
 
         from langchain_box.document_loaders import BoxLoader
