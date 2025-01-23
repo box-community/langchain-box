@@ -44,7 +44,8 @@ box_developer_token=box_developer_token
 loader = BoxLoader(   
 box_auth=auth,   
 ...   
-)  ```   
+)   
+```   
   
   
 **JWT with a service account**   
