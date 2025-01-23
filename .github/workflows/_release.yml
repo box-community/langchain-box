@@ -234,11 +234,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Generate Python Docs
-      uses: jbheard/markdown-docs@v1
+      uses: shurrey/markdown-docs@master
     - name: Open docs update PR
-      uses: peter-evans/create-pull-request@v2
+      uses: peter-evans/create-pull-request@v5
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}  
+        token: ${{ secrets.GITHUB_TOKEN }} 
 
   mark-release:
     needs:
